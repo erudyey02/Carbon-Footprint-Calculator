@@ -37,5 +37,5 @@ Follow these steps to get the project running on your local machine.
 ### Cloning the Repository
 
 ```bash
-git clone <your-github-repository-url>
+git clone https://github.com/erudyey02/Carbon-Footprint-Calculator.git
 cd <repository-folder-name>
