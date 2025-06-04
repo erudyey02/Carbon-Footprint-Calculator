@@ -18,23 +18,19 @@ public class CalculationServiceImpl implements CalculationService {
 
     @Override
     public CalculatedFootprintData calculateFootprint(UserData userData) {
-        System.out.println("Calculating footprint..."); // Log: General calculation start.
+        System.out.println("Calculating footprint...");
         double totalAnnualFootprintKgCO2e = 0;
         Map<String, Double> footprintByCategory = new HashMap<>();
 
-        // Calculate footprint for each category by calling dedicated methods.
         double housingAndEnergyFootprint = calculateHousingAndEnergyFootprint(userData);
         footprintByCategory.put("Housing & Energy", housingAndEnergyFootprint);
         totalAnnualFootprintKgCO2e += housingAndEnergyFootprint;
 
-        // TODO: Implement and call calculation methods for other categories.
-        // double dietFootprint = calculateDietFootprint(userData);
-        // footprintByCategory.put("Diet", dietFootprint);
-        // totalAnnualFootprintKgCO2e += dietFootprint;
-        // ... and so on for Transport, Waste, Goods.
+        double dietFootprint = calculateDietFootprint(userData); // Call new diet calculation method
+        footprintByCategory.put("Diet", dietFootprint);
+        totalAnnualFootprintKgCO2e += dietFootprint;
 
-        // Add placeholders for other categories until their calculations are implemented.
-        footprintByCategory.putIfAbsent("Diet", 0.0);
+        // TODO: Implement and call calculation methods for other categories.
         footprintByCategory.putIfAbsent("Transport", 0.0);
         footprintByCategory.putIfAbsent("Waste Management", 0.0);
         footprintByCategory.putIfAbsent("Goods Consumption", 0.0);
@@ -45,12 +41,6 @@ public class CalculationServiceImpl implements CalculationService {
         return new CalculatedFootprintData(totalAnnualFootprintKgCO2e, footprintByCategory);
     }
 
-    /**
-     * Calculates the carbon footprint from housing operational energy (electricity, cooking fuels)
-     * and water consumption.
-     * @param userData The user's input data.
-     * @return The calculated footprint in kg CO2e for this category.
-     */
     private double calculateHousingAndEnergyFootprint(UserData userData) {
         double categoryFootprint = 0;
 
@@ -59,20 +49,15 @@ public class CalculationServiceImpl implements CalculationService {
             double annualKWh = userData.getMonthlyElectricityKWh() * 12;
             double gridFactor;
             String region = userData.getElectricityGridRegion();
-
-            // Select appropriate grid factor. Default to national placeholder if region is unknown or not specified.
-            // Note: Current regional factors are CO2 only. This should be highlighted in HelpPage or updated to CO2e.
             if ("Luzon-Visayas".equalsIgnoreCase(region)) {
                 gridFactor = AppConstants.EF_GRID_ELECTRICITY_LUZON_VISAYAS_KGCO2_PER_KWH;
             } else if ("Mindanao".equalsIgnoreCase(region)) {
                 gridFactor = AppConstants.EF_GRID_ELECTRICITY_MINDANAO_KGCO2_PER_KWH;
             } else {
-                // Default or if user selects "National Average/Unknown"
                 gridFactor = AppConstants.EF_GRID_ELECTRICITY_NATIONAL_PH_KGCO2E_PER_KWH_PLACEHOLDER;
                 System.out.println("Calculation Warning: Using placeholder national average grid factor for electricity.");
             }
             categoryFootprint += annualKWh * gridFactor;
-            System.out.println("Debug: Electricity footprint contribution: " + (annualKWh * gridFactor) + " kg CO2(e)");
         }
 
         // 2. Cooking Fuel Consumption
@@ -80,7 +65,6 @@ public class CalculationServiceImpl implements CalculationService {
             String fuelType = userData.getPrimaryCookingFuelType();
             double annualUsage = userData.getCookingFuelMonthlyUsage() * 12;
             double cookingFuelEmission = 0;
-
             if ("LPG".equalsIgnoreCase(fuelType)) {
                 cookingFuelEmission = annualUsage * AppConstants.EF_COOKING_LPG_KGCO2E_PER_KG;
             } else if ("Kerosene".equalsIgnoreCase(fuelType)) {
@@ -93,29 +77,80 @@ public class CalculationServiceImpl implements CalculationService {
                 } else {
                     cookingFuelEmission = annualUsage * AppConstants.EF_COOKING_WOOD_NON_SUSTAINABLE_KGCO2E_PER_KG;
                 }
-            } else if ("Electricity".equalsIgnoreCase(fuelType)) {
-                // Electricity for cooking is assumed to be part of the main monthlyElectricityKWh.
-                // No separate calculation here unless specific appliance data for cooking is added and handled.
-                System.out.println("Calculation Info: Electricity for cooking is included in overall electricity usage calculation.");
             }
             categoryFootprint += cookingFuelEmission;
-            System.out.println("Debug: Cooking fuel (" + fuelType + ") footprint contribution: " + cookingFuelEmission + " kg CO2e");
         }
 
         // 3. Water Consumption
         if (userData.getDailyHouseholdWaterUsageLiters() > 0) {
-            double annualWaterUsageM3 = (userData.getDailyHouseholdWaterUsageLiters() * 365) / 1000.0; // Convert Liters/day to cubic meters/year
-            // Using Manila Water factor. This needs refinement for broader applicability or user input for water source.
+            double annualWaterUsageM3 = (userData.getDailyHouseholdWaterUsageLiters() * 365) / 1000.0;
             double waterEmission = annualWaterUsageM3 * AppConstants.EF_WATER_MANILA_KGCO2E_PER_M3;
             categoryFootprint += waterEmission;
-            System.out.println("Debug: Water consumption footprint contribution: " + waterEmission + " kg CO2e");
         }
 
-        System.out.println("Debug: Total Housing & Energy Footprint: " + categoryFootprint + " kg CO2e");
         return categoryFootprint;
     }
 
-    // TODO: Implement calculateDietFootprint(UserData userData)
+    private double calculateDietFootprint(UserData userData) {
+        double categoryFootprint = 0;
+        double annualServings;
+
+        // 1. Red Meat
+        annualServings = getAnnualServingsFromFrequency(userData.getRedMeatFrequency());
+        if (annualServings > 0) {
+            categoryFootprint += annualServings * AppConstants.AVG_SERVING_SIZE_MEAT_KG * AppConstants.EF_DIET_RED_MEAT_AVG_PH_KGCO2E_PER_KG;
+        }
+
+        // 2. Poultry
+        annualServings = getAnnualServingsFromFrequency(userData.getPoultryFrequency());
+        if (annualServings > 0) {
+            categoryFootprint += annualServings * AppConstants.AVG_SERVING_SIZE_MEAT_KG * AppConstants.EF_DIET_POULTRY_CHICKEN_PH_LCA_KGCO2E_PER_KG_CW;
+        }
+
+        // 3. Fish/Seafood
+        annualServings = getAnnualServingsFromFrequency(userData.getFishSeafoodFrequency());
+        if (annualServings > 0) {
+            // Using placeholder average fish factor with caution
+            categoryFootprint += annualServings * AppConstants.AVG_SERVING_SIZE_MEAT_KG * AppConstants.EF_DIET_FISH_AVG_GLOBAL_PROXY_KGCO2E_PER_KG_CAUTION;
+        }
+
+        // 4. Rice
+        if (userData.getDailyRiceServings() > 0) {
+            double annualRiceKg = userData.getDailyRiceServings() * AppConstants.RICE_SERVING_SIZE_KG * 365;
+            double riceFactor = AppConstants.EF_DIET_RICE_IRRIGATED_PH_KGCO2E_PER_KG; // Default to irrigated
+            if ("Rainfed".equalsIgnoreCase(userData.getRiceType())) {
+                riceFactor = AppConstants.EF_DIET_RICE_RAINFED_PH_KGCO2E_PER_KG;
+            }
+            // TODO: Add UI option for user to specify rice type or use a weighted average if "Unknown/Average"
+            categoryFootprint += annualRiceKg * riceFactor;
+        }
+
+        // 5. Food Waste
+        if (userData.getWeeklyFoodWasteKg() > 0) {
+            double annualFoodWasteKg = userData.getWeeklyFoodWasteKg() * 52;
+            categoryFootprint += annualFoodWasteKg * AppConstants.EF_DIET_FOOD_WASTE_LANDFILL_MM_KGCO2E_PER_KG;
+        }
+
+        // Note: Dietary pattern (Vegan, Vegetarian) currently influences recommendations.
+        // For calculation, if "Vegan" or "Vegetarian", meat/poultry/fish inputs would ideally be 0 or disabled in UI.
+        // The "plant-based staples" factor is available but estimating its quantity is complex without more inputs.
+        // For now, the diet footprint is primarily from meat, fish, rice, and food waste as per direct inputs.
+
+        System.out.println("Debug: Total Diet Footprint: " + categoryFootprint + " kg CO2e");
+        return categoryFootprint;
+    }
+
+    private int getAnnualServingsFromFrequency(String frequency) {
+        if (frequency == null) return 0;
+        switch (frequency) {
+            case "Daily": return AppConstants.SERVINGS_PER_YEAR_DAILY;
+            case "3-5 times/week": return AppConstants.SERVINGS_PER_YEAR_FREQ;
+            case "1-2 times/week": return AppConstants.SERVINGS_PER_YEAR_OCCAS;
+            case "Rarely/Never": return AppConstants.SERVINGS_PER_YEAR_RARELY; // Or 0 for "Never"
+            default: return 0;
+        }
+    }
+
     // TODO: Implement calculateTransportationFootprint(UserData userData)
     // TODO: Implement calculateWasteFootprint(UserData userData)
     // TODO: Implement calculateGoodsFootprint(UserData userData)

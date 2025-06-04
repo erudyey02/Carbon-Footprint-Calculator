@@ -11,7 +11,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight; // Correctly import FontWeight
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -35,11 +35,10 @@ public class HelpPage {
         contentLayout.setStyle("-fx-background-color: #F1F8E9;");
 
         Label title = new Label("Help & Information");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 20)); // Corrected: Use FontWeight.BOLD
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
-        // --- Methodology Introduction Section ---
         Label methodologyTitle = new Label("Calculation Methodology");
-        methodologyTitle.setFont(Font.font("Arial", FontWeight.BOLD, 16)); // Corrected: Use FontWeight.BOLD
+        methodologyTitle.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         methodologyTitle.setPadding(new Insets(10,0,5,0));
 
         Label methodologyIntro = new Label(
@@ -62,73 +61,42 @@ public class HelpPage {
         housingMethodology.setMaxWidth(700);
         housingMethodology.setPadding(new Insets(5,0,0,0));
 
-
-        // --- Emission Factor Sources Section ---
         Label sourcesTitle = new Label("Emission Factor Sources:");
-        sourcesTitle.setFont(Font.font("Arial", FontWeight.BOLD, 16)); // Corrected: Use FontWeight.BOLD
+        sourcesTitle.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         sourcesTitle.setPadding(new Insets(15,0,5,0));
 
         VBox sourcesList = new VBox(8);
 
         // Energy Consumption Sources
         sourcesList.getChildren().add(createSectionTitle("Energy Consumption:"));
-        sourcesList.getChildren().add(createSourceEntry(
-                "Grid Electricity (Luzon-Visayas):",
-                AppConstants.EF_GRID_ELECTRICITY_LUZON_VISAYAS_KGCO2_PER_KWH + " kg CO2/kWh (CO2 only)",
-                "JCM Project Design Documents PH-P001/PH-P002 (DOE Data 2015-2017). Note: This is a CO2-only factor; a comprehensive CO2e factor is preferred if available."
-        ));
-        sourcesList.getChildren().add(createSourceEntry(
-                "Grid Electricity (Mindanao):",
-                AppConstants.EF_GRID_ELECTRICITY_MINDANAO_KGCO2_PER_KWH + " kg CO2/kWh (CO2 only)",
-                "JCM Project Design Documents PH-P001/PH-P002 (DOE Data 2015-2017). Note: CO2-only factor."
-        ));
-        sourcesList.getChildren().add(createSourceEntry(
-                "Grid Electricity (National Placeholder):",
-                AppConstants.EF_GRID_ELECTRICITY_NATIONAL_PH_KGCO2E_PER_KWH_PLACEHOLDER + " kg CO2(e)/kWh",
-                "Example placeholder (Climatiq 0.691 kgCO2/kWh - 2019 data, noted as CO2 only). An actual CO2e factor from IEA or DENR is preferred."
-        ));
-        sourcesList.getChildren().add(createSourceEntry(
-                "LPG (Cooking):",
-                AppConstants.EF_COOKING_LPG_KGCO2E_PER_KG + " kg CO2e/kg",
-                "Derived from IPCC (2006) NCV & EFs, AR5 GWPs."
-        ));
-        sourcesList.getChildren().add(createSourceEntry(
-                "Kerosene (Cooking):",
-                AppConstants.EF_COOKING_KEROSENE_KGCO2E_PER_L + " kg CO2e/L",
-                "Derived from IPCC (2006) NCV & EFs, assumed density 0.80 kg/L, AR5 GWPs."
-        ));
-        sourcesList.getChildren().add(createSourceEntry(
-                "Charcoal (Cooking):",
-                AppConstants.EF_COOKING_CHARCOAL_KGCO2E_PER_KG + " kg CO2e/kg",
-                "Derived from IPCC (2006) NCV & EFs, AR5 GWPs (direct combustion only)."
-        ));
-        sourcesList.getChildren().add(createSourceEntry(
-                "Wood (Cooking, Non-Sustainable):",
-                AppConstants.EF_COOKING_WOOD_NON_SUSTAINABLE_KGCO2E_PER_KG + " kg CO2e/kg",
-                "Derived from IPCC (2006) NCV & EFs, AR5 GWPs (includes CO2 from non-sustainable harvesting)."
-        ));
-        sourcesList.getChildren().add(createSourceEntry(
-                "Wood (Cooking, Sustainable - CH4 & N2O only):",
-                AppConstants.EF_COOKING_WOOD_SUSTAINABLE_KGCO2E_PER_KG + " kg CO2e/kg",
-                "Derived from IPCC (2006) NCV & EFs, AR5 GWPs (CO2 considered biogenic neutral)."
-        ));
-        sourcesList.getChildren().add(createSourceEntry(
-                "Water Supply (Manila Water):",
-                AppConstants.EF_WATER_MANILA_KGCO2E_PER_M3 + " kg CO2e/m³",
-                "Manila Water Sustainability Report 2018. Specific to Manila Water concession. (1 m³ = 1000 Liters)"
-        ));
+        sourcesList.getChildren().add(createSourceEntry("Grid Electricity (Luzon-Visayas):", AppConstants.EF_GRID_ELECTRICITY_LUZON_VISAYAS_KGCO2_PER_KWH + " kg CO2/kWh (CO2 only)", "JCM Project Design Documents PH-P001/PH-P002 (DOE Data 2015-2017). Note: CO2-only factor; comprehensive CO2e factor preferred."));
+        sourcesList.getChildren().add(createSourceEntry("Grid Electricity (Mindanao):", AppConstants.EF_GRID_ELECTRICITY_MINDANAO_KGCO2_PER_KWH + " kg CO2/kWh (CO2 only)", "JCM Project Design Documents PH-P001/PH-P002 (DOE Data 2015-2017). Note: CO2-only factor."));
+        sourcesList.getChildren().add(createSourceEntry("Grid Electricity (National Placeholder):", AppConstants.EF_GRID_ELECTRICITY_NATIONAL_PH_KGCO2E_PER_KWH_PLACEHOLDER + " kg CO2(e)/kWh", "Example placeholder (Climatiq 0.691 kgCO2/kWh - 2019 data, CO2 only). Actual CO2e factor from IEA or DENR preferred."));
+        sourcesList.getChildren().add(createSourceEntry("LPG (Cooking):", AppConstants.EF_COOKING_LPG_KGCO2E_PER_KG + " kg CO2e/kg", "Derived from IPCC (2006) NCV & EFs, AR5 GWPs."));
+        sourcesList.getChildren().add(createSourceEntry("Kerosene (Cooking):", AppConstants.EF_COOKING_KEROSENE_KGCO2E_PER_L + " kg CO2e/L", "Derived from IPCC (2006) NCV & EFs, assumed density 0.80 kg/L, AR5 GWPs."));
+        sourcesList.getChildren().add(createSourceEntry("Charcoal (Cooking):", AppConstants.EF_COOKING_CHARCOAL_KGCO2E_PER_KG + " kg CO2e/kg", "Derived from IPCC (2006) NCV & EFs, AR5 GWPs (direct combustion only)."));
+        sourcesList.getChildren().add(createSourceEntry("Wood (Cooking, Non-Sustainable):", AppConstants.EF_COOKING_WOOD_NON_SUSTAINABLE_KGCO2E_PER_KG + " kg CO2e/kg", "Derived from IPCC (2006) NCV & EFs, AR5 GWPs (includes CO2 from non-sustainable harvesting)."));
+        sourcesList.getChildren().add(createSourceEntry("Wood (Cooking, Sustainable - CH4 & N2O only):", AppConstants.EF_COOKING_WOOD_SUSTAINABLE_KGCO2E_PER_KG + " kg CO2e/kg", "Derived from IPCC (2006) NCV & EFs, AR5 GWPs (CO2 considered biogenic neutral)."));
+        sourcesList.getChildren().add(createSourceEntry("Water Supply (Manila Water):", AppConstants.EF_WATER_MANILA_KGCO2E_PER_M3 + " kg CO2e/m³", "Manila Water Sustainability Report 2018. Specific to Manila Water concession. (1 m³ = 1000 Liters)"));
 
-        // TODO: Add source entries for Diet, Transportation, Waste, and Goods categories as their AppConstants are populated.
-        // Example for Diet:
-        // sourcesList.getChildren().add(createSectionTitle("Diet:"));
-        // sourcesList.getChildren().add(createSourceEntry("Beef (SE Asia Average):", AppConstants.EF_DIET_BEEF_KGCO2E_PER_KG + " kg CO2e/kg", "Derived from FAOSTAT data per kg protein, SE Asia farm-gate."));
+        // Diet Sources
+        sourcesList.getChildren().add(createSectionTitle("Diet:"));
+        sourcesList.getChildren().add(createSourceEntry("Average Red Meat (PH Weighted):", AppConstants.EF_DIET_RED_MEAT_AVG_PH_KGCO2E_PER_KG + " kg CO2e/kg", "SE Asia farm-gate EFs (derived from FAOSTAT data per kg protein), weighted by PH consumption."));
+        sourcesList.getChildren().add(createSourceEntry("Poultry (Chicken - PH LCA):", AppConstants.EF_DIET_POULTRY_CHICKEN_PH_LCA_KGCO2E_PER_KG_CW + " kg CO2e/kg CW", "Source: Espino & Bellotindos (2020), intensive broiler. CW = Carcass Weight."));
+        sourcesList.getChildren().add(createSourceEntry("Average Fish/Seafood (Proxy):", AppConstants.EF_DIET_FISH_AVG_GLOBAL_PROXY_KGCO2E_PER_KG_CAUTION + " kg CO2e/kg", "Placeholder using PH Milkfish factor (source verification needed) or global proxy. Use with caution."));
+        sourcesList.getChildren().add(createSourceEntry("Irrigated Rice (PH LCA):", AppConstants.EF_DIET_RICE_IRRIGATED_PH_KGCO2E_PER_KG + " kg CO2e/kg", "Source: Bautista et al. (2014); uses SAR-like GWPs."));
+        sourcesList.getChildren().add(createSourceEntry("Rainfed Rice (PH LCA):", AppConstants.EF_DIET_RICE_RAINFED_PH_KGCO2E_PER_KG + " kg CO2e/kg", "Source: Bautista et al. (2014); uses SAR-like GWPs."));
+        sourcesList.getChildren().add(createSourceEntry("Food Waste (Metro Manila Landfill):", AppConstants.EF_DIET_FOOD_WASTE_LANDFILL_MM_KGCO2E_PER_KG + " kg CO2e/kg", "Source: Derived from Oida et al. (2019); AR5 GWP for CH4."));
+        sourcesList.getChildren().add(createSourceEntry("Avg. Plant-Based Staples (Proxy):", AppConstants.EF_DIET_PLANT_STAPLES_AVG_PROXY_KGCO2E_PER_KG + " kg CO2e/kg", "Placeholder based on global medians. Use with caution."));
+
+        // TODO: Add source entries for Transportation, Waste, Goods categories.
 
         Label generalNotes = new Label(
                 "General Notes:\n" +
-                        "- This list of sources is not exhaustive and will be updated as more factors are integrated into the calculator.\n" +
-                        "- The calculator prioritizes Philippines-specific data when available. Global or regional averages are used as alternatives.\n" +
-                        "- GWP (Global Warming Potential) values used for CO2e conversion are generally from IPCC AR5 unless specified otherwise by the source documentation for a particular emission factor.\n" +
-                        "- Emission factors can vary based on specific technologies, local conditions, and the vintage of the data. The values used represent the best available estimates based on the research conducted for this project."
+                        "- This list of sources is not exhaustive and will be updated as more factors are integrated.\n" +
+                        "- The calculator prioritizes Philippines-specific data. Global or regional averages are used as alternatives.\n" +
+                        "- GWP (Global Warming Potential) values used for CO2e conversion are generally from IPCC AR5 unless specified otherwise.\n" +
+                        "- Emission factors can vary. The values used represent best available estimates based on research."
         );
         generalNotes.setWrapText(true);
         generalNotes.setMaxWidth(700);
@@ -136,7 +104,7 @@ public class HelpPage {
 
         contentLayout.getChildren().addAll(title, methodologyTitle, methodologyIntro, housingMethodology, sourcesTitle, sourcesList, generalNotes);
 
-        ScrollPane scrollPane = new ScrollPane(contentLayout); // Makes the content scrollable.
+        ScrollPane scrollPane = new ScrollPane(contentLayout);
         scrollPane.setFitToWidth(true);
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background: #F1F8E9;");
 
@@ -145,18 +113,18 @@ public class HelpPage {
 
     private Label createSectionTitle(String title) {
         Label sectionTitle = new Label(title);
-        sectionTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14)); // Corrected: Use FontWeight.BOLD
+        sectionTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         sectionTitle.setPadding(new Insets(10, 0, 2, 0));
         return sectionTitle;
     }
 
     private TextFlow createSourceEntry(String item, String value, String sourceDetails) {
         Text itemText = new Text(item + " ");
-        itemText.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 12)); // Corrected: Use FontWeight.SEMI_BOLD
+        itemText.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 12));
         Text valueText = new Text(value + "\n");
-        valueText.setFont(Font.font("Arial", FontWeight.NORMAL, 12)); // Use FontWeight.NORMAL for regular text
+        valueText.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
         Text sourceText = new Text("    Source/Note: " + sourceDetails + "\n");
-        sourceText.setFont(Font.font("Arial", FontWeight.NORMAL, 11)); // Use FontWeight.NORMAL
+        sourceText.setFont(Font.font("Arial", FontWeight.NORMAL, 11));
         sourceText.setFill(Color.SLATEGRAY);
 
         TextFlow textFlow = new TextFlow(itemText, valueText, sourceText);

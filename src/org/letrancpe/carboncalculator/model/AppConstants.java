@@ -9,105 +9,77 @@ package org.letrancpe.carboncalculator.model;
 public class AppConstants {
 
     // === I. HOUSING ===
-    // As per previous discussions, direct emission factors for dwelling structure or efficiency ratings
-    // are not used in this phase for CO2e calculation. These inputs primarily inform recommendations.
+    // (No direct emission factors for dwelling structure/efficiency rating in this phase)
 
     // === II. ENERGY CONSUMPTION ===
-
     // --- Grid Electricity ---
-    // Note: The initial factors below are CO2-only. Comprehensive CO2e factors from sources like the
-    // latest IEA data are preferred and should be sought. The calculator should ideally allow users
-    // to select their grid or use a national average if their region is unknown.
-    /**
-     * Luzon-Visayas Grid electricity emission factor.
-     * Unit: kg CO2/kWh (This factor is CO2 only)
-     * Source: JCM Project Design Documents PH-P001/PH-P002 (DOE Data 2015-2017)
-     */
-    public static final double EF_GRID_ELECTRICITY_LUZON_VISAYAS_KGCO2_PER_KWH = 0.507;
-
-    /**
-     * Mindanao Grid electricity emission factor.
-     * Unit: kg CO2/kWh (This factor is CO2 only)
-     * Source: JCM Project Design Documents PH-P001/PH-P002 (DOE Data 2015-2017)
-     */
-    public static final double EF_GRID_ELECTRICITY_MINDANAO_KGCO2_PER_KWH = 0.468;
-
-    /**
-     * Placeholder for a National Average Philippine Grid electricity emission factor.
-     * Unit: kg CO2e/kWh (Ideally CO2e, but may start with CO2 if that's the only available data)
-     * Source: Requires further research (e.g., latest IEA data). Climatiq (0.691 kgCO2/kWh, 2019 data, noted as CO2 only) is an example.
-     */
-    public static final double EF_GRID_ELECTRICITY_NATIONAL_PH_KGCO2E_PER_KWH_PLACEHOLDER = 0.691; // Example placeholder value
+    public static final double EF_GRID_ELECTRICITY_LUZON_VISAYAS_KGCO2_PER_KWH = 0.507; // CO2 only, JCM (DOE Data 2015-2017)
+    public static final double EF_GRID_ELECTRICITY_MINDANAO_KGCO2_PER_KWH = 0.468;     // CO2 only, JCM (DOE Data 2015-2017)
+    public static final double EF_GRID_ELECTRICITY_NATIONAL_PH_KGCO2E_PER_KWH_PLACEHOLDER = 0.691; // Placeholder, Climatiq (2019 data, CO2 only)
 
     // --- Cooking Fuels ---
-    /**
-     * LPG (Liquefied Petroleum Gas) emission factor.
-     * Unit: kg CO2e/kg of LPG
-     * Source: Derived from IPCC (2006) NCV & EFs, AR5 GWPs (as per research document)
-     */
-    public static final double EF_COOKING_LPG_KGCO2E_PER_KG = 2.99;
-
-    /**
-     * Kerosene emission factor.
-     * Unit: kg CO2e/L of Kerosene
-     * Source: Derived from IPCC (2006) NCV & EFs, assumed density 0.80 kg/L, AR5 GWPs (as per research document)
-     */
-    public static final double EF_COOKING_KEROSENE_KGCO2E_PER_L = 2.53;
-
-    /**
-     * Charcoal emission factor (represents direct combustion only).
-     * Unit: kg CO2e/kg of Charcoal
-     * Source: Derived from IPCC (2006) NCV & EFs, AR5 GWPs (as per research document)
-     */
-    public static final double EF_COOKING_CHARCOAL_KGCO2E_PER_KG = 3.48;
-
-    /**
-     * Wood emission factor (accounts for CH4 & N2O only, assuming sustainable sourcing where CO2 is biogenic neutral).
-     * Unit: kg CO2e/kg of Wood
-     * Source: Derived from IPCC (2006) NCV & EFs, AR5 GWPs (as per research document)
-     */
-    public static final double EF_COOKING_WOOD_SUSTAINABLE_KGCO2E_PER_KG = 0.15;
-
-    /**
-     * Wood emission factor (includes CO2, assuming non-sustainably sourced fuelwood).
-     * Unit: kg CO2e/kg of Wood
-     * Source: Derived from IPCC (2006) NCV & EFs, AR5 GWPs (as per research document)
-     */
-    public static final double EF_COOKING_WOOD_NON_SUSTAINABLE_KGCO2E_PER_KG = 1.90;
+    public static final double EF_COOKING_LPG_KGCO2E_PER_KG = 2.99;                     // Derived IPCC (2006) NCV & EFs, AR5 GWPs
+    public static final double EF_COOKING_KEROSENE_KGCO2E_PER_L = 2.53;                 // Derived IPCC (2006) NCV & EFs, density 0.80 kg/L, AR5 GWPs
+    public static final double EF_COOKING_CHARCOAL_KGCO2E_PER_KG = 3.48;                // Derived IPCC (2006) NCV & EFs, AR5 GWPs (direct combustion)
+    public static final double EF_COOKING_WOOD_SUSTAINABLE_KGCO2E_PER_KG = 0.15;        // Derived IPCC (2006) NCV & EFs, AR5 GWPs (CH4 & N2O only)
+    public static final double EF_COOKING_WOOD_NON_SUSTAINABLE_KGCO2E_PER_KG = 1.90;    // Derived IPCC (2006) NCV & EFs, AR5 GWPs (incl. CO2)
 
     // --- Water Supply ---
-    /**
-     * Water supply emission factor (specific to Manila Water concession area).
-     * Unit: kg CO2e/m³ (cubic meter)
-     * Source: Manila Water Sustainability Report 2018 (as per research document)
-     * Note: 1 cubic meter = 1000 Liters.
-     */
-    public static final double EF_WATER_MANILA_KGCO2E_PER_M3 = 0.195;
-    // TODO: Research a national average or factors for other regions for broader applicability.
+    public static final double EF_WATER_MANILA_KGCO2E_PER_M3 = 0.195;                   // Manila Water Sustainability Report 2018 (1 m³ = 1000 L)
 
     // === III. DIET ===
-    // (Constants for diet-related emission factors will be populated here based on research findings).
-    // Example structure from research:
-    // public static final double EF_DIET_BEEF_SE_ASIA_KGCO2E_PER_KG = 67.2;
-    // public static final double EF_DIET_RICE_IRRIGATED_PH_KGCO2E_PER_KG = 0.93; // Bautista et al. 2014 (SAR GWPs)
+    // --- Meat & Poultry ---
+    /** Average Red Meat (PH consumption weighted, SE Asia farm-gate EFs). Unit: kgCO2e/kg (raw, as purchased) */
+    public static final double EF_DIET_RED_MEAT_AVG_PH_KGCO2E_PER_KG = 10.8;
+    /** Poultry (Chicken - Intensive Broiler, PH LCA). Unit: kgCO2e/kg Carcass Weight (proxy for raw, as purchased) */
+    public static final double EF_DIET_POULTRY_CHICKEN_PH_LCA_KGCO2E_PER_KG_CW = 5.0; // Source: Espino & Bellotindos, 2020
+
+    // --- Fish/Seafood ---
+    /** Farmed Milkfish (PH) - Use with caution, source verification needed. Unit: kgCO2e/kg (assumed raw, as purchased) */
+    public static final double EF_DIET_FISH_MILKFISH_PH_KGCO2E_PER_KG_CAUTION = 8.24; // Placeholder, needs verified source
+    /** General Global Proxy for Average Fish/Seafood - Use with extreme caution. Unit: kgCO2e/kg (assumed raw, as purchased) */
+    public static final double EF_DIET_FISH_AVG_GLOBAL_PROXY_KGCO2E_PER_KG_CAUTION = 8.24; // Using Milkfish as a more conservative proxy than 13.4
+
+    // --- Rice ---
+    /** Irrigated Rice (PH LCA, Bautista et al., 2014; SAR-like GWPs). Unit: kgCO2e/kg (uncooked) */
+    public static final double EF_DIET_RICE_IRRIGATED_PH_KGCO2E_PER_KG = 0.93;
+    /** Rainfed Rice (PH LCA, Bautista et al., 2014; SAR-like GWPs). Unit: kgCO2e/kg (uncooked) */
+    public static final double EF_DIET_RICE_RAINFED_PH_KGCO2E_PER_KG = 0.47;
+
+    // --- Food Waste ---
+    /** Food Waste (to landfill, Metro Manila conditions). Unit: kgCO2e/kg of food waste */
+    public static final double EF_DIET_FOOD_WASTE_LANDFILL_MM_KGCO2E_PER_KG = 1.40; // Derived Oida et al. 2019 (AR5 GWP for CH4)
+
+    // --- Plant-Based Staples ---
+    /** General Global Proxy for Average Plant-Based Staples (excluding rice) - Use with caution. Unit: kgCO2e/kg */
+    public static final double EF_DIET_PLANT_STAPLES_AVG_PROXY_KGCO2E_PER_KG = 0.7; // Placeholder, based on global medians
+
+    // --- Diet Calculation Helpers ---
+    /** Assumed average serving size for meat/poultry/fish. Unit: kg per serving */
+    public static final double AVG_SERVING_SIZE_MEAT_KG = 0.125; // 125g average serving
+    /** Number of servings per year for "Daily" frequency. */
+    public static final int SERVINGS_PER_YEAR_DAILY = 365;
+    /** Number of servings per year for "3-5 times/week" frequency (average 4 times/week). */
+    public static final int SERVINGS_PER_YEAR_FREQ = 4 * 52; // 208
+    /** Number of servings per year for "1-2 times/week" frequency (average 1.5 times/week). */
+    public static final int SERVINGS_PER_YEAR_OCCAS = (int) (1.5 * 52); // 78
+    /** Number of servings per year for "Rarely" frequency (e.g., once a month). */
+    public static final int SERVINGS_PER_YEAR_RARELY = 12;
+    /** Assumed weight of one rice serving. Unit: kg (uncooked) */
+    public static final double RICE_SERVING_SIZE_KG = 0.060; // 60g uncooked
+
 
     // === IV. TRANSPORTATION ===
-    // (Constants for transportation-related emission factors will be populated here).
-    // Example structure from research:
-    // public static final double EF_TRANSPORT_CAR_GASOLINE_COMBUSTION_KGCO2_PER_L = 2.30; // CO2 only from combustion.
+    // (To be populated)
 
     // === V. WASTE MANAGEMENT ===
-    // (Constants for waste management emission factors will be populated here).
-    // Example structure from research:
-    // public static final double EF_WASTE_MSW_LANDFILL_METRO_MANILA_KGCO2E_PER_KG = 4.05; // Oida et al. 2019 (likely AR4 GWP)
+    // (To be populated)
 
     // === VI. GOODS CONSUMPTION ===
-    // (Constants for goods consumption, likely spend-based factors, will be populated here. These are TBD and complex).
-
+    // (To be populated)
 
     // --- UI Constants ---
     public static final String APP_TITLE = "Carbon Footprint Calculator PH";
 
-    // Private constructor to prevent instantiation of this utility class.
     private AppConstants() {}
 }
