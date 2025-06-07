@@ -2,6 +2,8 @@
 package org.letrancpe.carboncalculator.controller;
 
 import org.letrancpe.carboncalculator.model.UserData;
+import org.letrancpe.carboncalculator.model.dto.CalculatedFootprintData;
+import org.letrancpe.carboncalculator.model.dto.Recommendation;
 import org.letrancpe.carboncalculator.service.CalculationService;
 import org.letrancpe.carboncalculator.service.ReductionPlannerService;
 import org.letrancpe.carboncalculator.service.impl.CalculationServiceImpl;
@@ -21,6 +23,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 /**
  * MainController directs the overall application flow.
  */
@@ -30,18 +34,18 @@ public class MainController {
     private final BorderPane rootLayout;
     private final StackPane pageContainer;
 
-    private UserData userData;
-    private CalculationService calculationService;
-    private ReductionPlannerService reductionPlannerService;
+    private final UserData userData;
+    private final CalculationService calculationService;
+    private final ReductionPlannerService reductionPlannerService;
 
     private Node introPageNode;
     private Node housingPageNode;
     private Node dietPageNode;
     private Node transportPageNode;
     private Node wastePageNode;
-    private Node goodsPageNode; // Added GoodsPage node
+    private Node goodsPageNode;
+    private ResultsPage resultsPage; // Keep instance to update it
     private Node helpPageNode;
-    // TODO: Add node for Results page.
 
     public MainController(Stage primaryStage, BorderPane rootLayout) {
         this.primaryStage = primaryStage;
@@ -49,14 +53,11 @@ public class MainController {
         this.pageContainer = new StackPane();
         this.pageContainer.setStyle("-fx-padding: 10px;");
 
-        initializeModelsAndServices();
-        initializeViews();
-    }
-
-    private void initializeModelsAndServices() {
         this.userData = new UserData();
         this.calculationService = new CalculationServiceImpl();
         this.reductionPlannerService = new ReductionPlannerServiceImpl();
+
+        initializeViews();
     }
 
     private void initializeViews() {
@@ -65,7 +66,8 @@ public class MainController {
         this.dietPageNode = new DietPage(this, userData).getView();
         this.transportPageNode = new TransportPage(this, userData).getView();
         this.wastePageNode = new WastePage(this, userData).getView();
-        this.goodsPageNode = new GoodsPage(this, userData).getView(); // Initialize GoodsPage
+        this.goodsPageNode = new GoodsPage(this, userData).getView();
+        this.resultsPage = new ResultsPage(this); // ResultsPage is instantiated here
         this.helpPageNode = new HelpPage(this).getView();
     }
 
@@ -87,7 +89,7 @@ public class MainController {
         transportButton.setOnAction(_ -> showPage(transportPageNode));
         Button wasteButton = createNavButton("Waste");
         wasteButton.setOnAction(_ -> showPage(wastePageNode));
-        Button goodsButton = createNavButton("Goods"); // Added Goods button
+        Button goodsButton = createNavButton("Goods");
         goodsButton.setOnAction(_ -> showPage(goodsPageNode));
         Button helpButton = createNavButton("Help / Sources");
         helpButton.setOnAction(_ -> showPage(helpPageNode));
@@ -95,7 +97,7 @@ public class MainController {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        navigationBar.getChildren().addAll(titleLabel, spacer, introButton, housingButton, dietButton, transportButton, wasteButton, goodsButton, helpButton); // Added goodsButton
+        navigationBar.getChildren().addAll(titleLabel, spacer, introButton, housingButton, dietButton, transportButton, wasteButton, goodsButton, helpButton);
         rootLayout.setTop(navigationBar);
         rootLayout.setCenter(pageContainer);
         showPage(introPageNode);
@@ -123,10 +125,21 @@ public class MainController {
     public void processDietData() { showPage(transportPageNode); }
     public void processTransportData() { showPage(wastePageNode); }
     public void processWasteData() { showPage(goodsPageNode); }
-    public void processGoodsData() {
-        System.out.println("Processing goods data (placeholder)...");
-        // TODO: Navigate to the final Results page
-        // showPage(resultsPageNode);
+
+    public void processGoodsDataAndCalculate() {
+        System.out.println("Final data saved. Calculating results...");
+
+        // 1. Perform the final calculation
+        CalculatedFootprintData footprintData = calculationService.calculateFootprint(userData);
+
+        // 2. Generate personalized recommendations
+        List<Recommendation> recommendations = reductionPlannerService.generateRecommendations(userData, footprintData);
+
+        // 3. Update the ResultsPage with the new data
+        resultsPage.updateResults(footprintData, recommendations);
+
+        // 4. Navigate to the ResultsPage
+        showPage(resultsPage.getView());
     }
 
     public UserData getUserData() {

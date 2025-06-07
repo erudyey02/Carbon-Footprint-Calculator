@@ -96,8 +96,8 @@ public class GoodsPage {
         boolean dataIsValid = true;
 
         try {
-            userData.setAnnualClothingSpendingPHP(parseDoubleField(clothingSpendingField, "Clothing Spending", true));
-            userData.setAnnualElectronicsSpendingPHP(parseDoubleField(electronicsSpendingField, "Electronics Spending", true));
+            userData.setAnnualClothingSpendingPHP(parseDoubleField(clothingSpendingField, "Clothing Spending", false));
+            userData.setAnnualElectronicsSpendingPHP(parseDoubleField(electronicsSpendingField, "Electronics Spending", false));
         } catch (IllegalArgumentException e) {
             appendErrorMessage(e.getMessage());
             dataIsValid = false;
@@ -105,7 +105,7 @@ public class GoodsPage {
 
         if (dataIsValid) {
             System.out.println("Goods Page: Data saved to UserData model.");
-            controller.processGoodsData();
+            controller.processGoodsDataAndCalculate(); // Changed to trigger final calculation and navigation
         }
     }
 
