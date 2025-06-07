@@ -60,6 +60,15 @@ public class AppConstants {
     /** Placeholder emission factor for electronics. Unit: kg CO2e/PHP */
     public static final double EF_GOODS_ELECTRONICS_KGCO2E_PER_PHP_PLACEHOLDER = 0.008; // Example proxy value
 
+    // === VII. OFFSETTING / IMPACT VISUALIZATION ===
+    /**
+     * Approximate kg CO2 absorbed by a mature tree annually.
+     * This is an average and can vary significantly based on tree type, age, climate, etc.
+     * Using a common estimate of 22 kg CO2 per tree per year (50 lbs / 2.2 lbs/kg).
+     */
+    public static final double EF_TREES_CO2_ABSORPTION_KG_PER_YEAR = 22.0;
+
+
     public static final String APP_TITLE = "Carbon Footprint Calculator PH";
 
     private AppConstants() {}

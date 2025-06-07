@@ -254,14 +254,102 @@ public class TransportPage {
         return section;
     }
 
-    // All other methods (addRegularTransportEntry, saveDataAndProcess, etc.) remain unchanged.
-    // ... (omitted for brevity, but they are the same as in the file you provided)
-    private void addRegularTransportEntry() {}
-    private void clearRegularTransportInputs() {}
-    private void addFlightEntry() {}
-    private void clearFlightInputs() {}
-    private GridPane createStyledGridPane() { GridPane grid = new GridPane(); grid.setHgap(10); grid.setVgap(10); return grid; }
-    private void addLabeledControl(GridPane grid, String labelText, Node control, int rowIndex, String tooltipText) { Label label = new Label(labelText); if (control instanceof Control) {((Control) control).setTooltip(new Tooltip(tooltipText));} grid.add(label, 0, rowIndex); grid.add(control, 1, rowIndex); GridPane.setHgrow(control, javafx.scene.layout.Priority.ALWAYS); }
+    private void addRegularTransportEntry() {
+        errorMessageLabel.setText("");
+        try {
+            String mode = modeComboBox.getValue();
+            String frequency = frequencyComboBoxRegular.getValue();
+            double distance = parseDoubleField(distanceField, "Distance (km)", true);
+
+            if (mode == null || mode.isEmpty()) {
+                throw new IllegalArgumentException("Please select a transport mode.");
+            }
+            if (frequency == null || frequency.isEmpty()) {
+                throw new IllegalArgumentException("Please select a frequency for regular transport.");
+            }
+
+            TransportEntry newEntry = new TransportEntry(mode, distance, frequency);
+
+            if ("Car".equalsIgnoreCase(mode) || "Motorcycle".equalsIgnoreCase(mode)) {
+                String fuelType = fuelTypeComboBox.getValue();
+                double fuelEfficiency = parseDoubleField(fuelEfficiencyField, "Fuel Efficiency (km/L)", true);
+                if (fuelType == null || fuelType.isEmpty()) {
+                    throw new IllegalArgumentException("Fuel type is required for Car/Motorcycle.");
+                }
+                newEntry.setFuelType(fuelType);
+                newEntry.setFuelEfficiencyKmL(fuelEfficiency);
+                if ("Car".equalsIgnoreCase(mode)) {
+                    newEntry.setPassengers(passengersSpinner.getValue());
+                }
+            }
+
+            regularTransportData.add(newEntry);
+            clearRegularTransportInputs();
+            System.out.println("Added regular transport entry: " + mode);
+
+        } catch (IllegalArgumentException e) {
+            appendErrorMessage(e.getMessage());
+        }
+    }
+
+    private void clearRegularTransportInputs() {
+        modeComboBox.getSelectionModel().clearSelection();
+        distanceField.clear();
+        frequencyComboBoxRegular.getSelectionModel().clearSelection();
+        fuelTypeComboBox.getSelectionModel().clearSelection();
+        fuelEfficiencyField.clear();
+        passengersSpinner.getValueFactory().setValue(1);
+    }
+
+    private void addFlightEntry() {
+        errorMessageLabel.setText("");
+        try {
+            String haulType = flightHaulComboBox.getValue();
+            String cabinClass = flightClassComboBox.getValue();
+            int numFlights = (int) parseDoubleField(numFlightsField, "# One-Way Flights/Year", true);
+            double avgDistance = parseDoubleField(avgFlightDistanceField, "Avg. One-Way Distance (km)", true);
+
+            if (haulType == null || haulType.isEmpty()) {
+                throw new IllegalArgumentException("Please select a flight haul type.");
+            }
+            if (cabinClass == null || cabinClass.isEmpty()) {
+                throw new IllegalArgumentException("Please select a cabin class.");
+            }
+
+            FlightEntry newEntry = new FlightEntry(haulType, cabinClass, numFlights, avgDistance);
+            flightData.add(newEntry);
+            clearFlightInputs();
+            System.out.println("Added flight entry: " + haulType + " " + cabinClass);
+
+        } catch (IllegalArgumentException e) {
+            appendErrorMessage(e.getMessage());
+        }
+    }
+
+    private void clearFlightInputs() {
+        flightHaulComboBox.getSelectionModel().clearSelection();
+        flightClassComboBox.getSelectionModel().clearSelection();
+        numFlightsField.clear();
+        avgFlightDistanceField.clear();
+    }
+
+    private GridPane createStyledGridPane() {
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        return grid;
+    }
+
+    private void addLabeledControl(GridPane grid, String labelText, Node control, int rowIndex, String tooltipText) {
+        Label label = new Label(labelText);
+        if (control instanceof Control) {
+            ((Control) control).setTooltip(new Tooltip(tooltipText));
+        }
+        grid.add(label, 0, rowIndex);
+        grid.add(control, 1, rowIndex);
+        GridPane.setHgrow(control, javafx.scene.layout.Priority.ALWAYS);
+    }
+
     private void saveDataAndProcess() {
         errorMessageLabel.setText("");
         boolean dataIsValid = true;
@@ -292,12 +380,11 @@ public class TransportPage {
             controller.processTransportData();
         }
     }
+
     private double parseDoubleField(TextField field, String fieldName, boolean isRequired) throws IllegalArgumentException {
         String text = field.getText();
         if (text == null || text.trim().isEmpty()) {
-            if (isRequired) {
-                throw new IllegalArgumentException(fieldName + " cannot be empty.");
-            }
+            if (isRequired) throw new IllegalArgumentException(fieldName + " cannot be empty.");
             return 0.0;
         }
         try {
@@ -310,6 +397,7 @@ public class TransportPage {
             throw new IllegalArgumentException("Invalid number format for " + fieldName + ". Please enter a valid number.");
         }
     }
+
     private void appendErrorMessage(String message) {
         if (errorMessageLabel.getText().isEmpty()) {
             errorMessageLabel.setText(message);
@@ -317,5 +405,4 @@ public class TransportPage {
             errorMessageLabel.setText(errorMessageLabel.getText() + "\n" + message);
         }
     }
-
 }
