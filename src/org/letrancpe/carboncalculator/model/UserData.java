@@ -41,11 +41,12 @@ public class UserData {
     private double annualNonCommuteCarFuelEfficiencyKmL;
 
     // === V. WASTE MANAGEMENT ===
-    private double weeklyNonRecycledWasteKg; // Estimated amount per week
-    private double recyclingRatePercentage; // Approximate percentage of recyclable waste that is actually recycled
+    private double weeklyNonRecycledWasteKg;
+    private double recyclingRatePercentage;
 
     // === VI. GOODS CONSUMPTION ===
-    // (Fields to be added)
+    private double annualClothingSpendingPHP;
+    private double annualElectronicsSpendingPHP;
 
     public UserData() {
         this.regularTransportEntries = new ArrayList<>();
@@ -53,15 +54,12 @@ public class UserData {
     }
 
     // --- Getters and Setters ---
-    // Housing
     public String getDwellingType() { return dwellingType; }
     public void setDwellingType(String dwellingType) { this.dwellingType = dwellingType; }
     public double getFloorArea() { return floorArea; }
     public void setFloorArea(double floorArea) { this.floorArea = floorArea; }
     public String getEnergyEfficiencyRating() { return energyEfficiencyRating; }
     public void setEnergyEfficiencyRating(String energyEfficiencyRating) { this.energyEfficiencyRating = energyEfficiencyRating; }
-
-    // Energy Consumption
     public String getElectricityGridRegion() { return electricityGridRegion; }
     public void setElectricityGridRegion(String electricityGridRegion) { this.electricityGridRegion = electricityGridRegion; }
     public double getMonthlyElectricityKWh() { return monthlyElectricityKWh; }
@@ -74,8 +72,6 @@ public class UserData {
     public void setWoodSustainablySourced(boolean woodSustainablySourced) { this.isWoodSustainablySourced = woodSustainablySourced; }
     public double getDailyHouseholdWaterUsageLiters() { return dailyHouseholdWaterUsageLiters; }
     public void setDailyHouseholdWaterUsageLiters(double dailyHouseholdWaterUsageLiters) { this.dailyHouseholdWaterUsageLiters = dailyHouseholdWaterUsageLiters; }
-
-    // Diet
     public String getRedMeatFrequency() { return redMeatFrequency; }
     public void setRedMeatFrequency(String redMeatFrequency) { this.redMeatFrequency = redMeatFrequency; }
     public String getPoultryFrequency() { return poultryFrequency; }
@@ -92,8 +88,6 @@ public class UserData {
     public void setWeeklyFoodWasteKg(double weeklyFoodWasteKg) { this.weeklyFoodWasteKg = weeklyFoodWasteKg; }
     public String getLocalFoodSourcingFrequency() { return localFoodSourcingFrequency; }
     public void setLocalFoodSourcingFrequency(String localFoodSourcingFrequency) { this.localFoodSourcingFrequency = localFoodSourcingFrequency; }
-
-    // Transportation
     public List<TransportEntry> getRegularTransportEntries() { return regularTransportEntries; }
     public void setRegularTransportEntries(List<TransportEntry> regularTransportEntries) { this.regularTransportEntries = regularTransportEntries; }
     public List<FlightEntry> getFlightEntries() { return flightEntries; }
@@ -104,12 +98,12 @@ public class UserData {
     public void setAnnualNonCommuteCarFuelType(String annualNonCommuteCarFuelType) { this.annualNonCommuteCarFuelType = annualNonCommuteCarFuelType; }
     public double getAnnualNonCommuteCarFuelEfficiencyKmL() { return annualNonCommuteCarFuelEfficiencyKmL; }
     public void setAnnualNonCommuteCarFuelEfficiencyKmL(double annualNonCommuteCarFuelEfficiencyKmL) { this.annualNonCommuteCarFuelEfficiencyKmL = annualNonCommuteCarFuelEfficiencyKmL; }
-
-    // Waste Management
     public double getWeeklyNonRecycledWasteKg() { return weeklyNonRecycledWasteKg; }
     public void setWeeklyNonRecycledWasteKg(double weeklyNonRecycledWasteKg) { this.weeklyNonRecycledWasteKg = weeklyNonRecycledWasteKg; }
     public double getRecyclingRatePercentage() { return recyclingRatePercentage; }
     public void setRecyclingRatePercentage(double recyclingRatePercentage) { this.recyclingRatePercentage = recyclingRatePercentage; }
-
-    // TODO: Add getters and setters for Goods fields.
+    public double getAnnualClothingSpendingPHP() { return annualClothingSpendingPHP; }
+    public void setAnnualClothingSpendingPHP(double annualClothingSpendingPHP) { this.annualClothingSpendingPHP = annualClothingSpendingPHP; }
+    public double getAnnualElectronicsSpendingPHP() { return annualElectronicsSpendingPHP; }
+    public void setAnnualElectronicsSpendingPHP(double annualElectronicsSpendingPHP) { this.annualElectronicsSpendingPHP = annualElectronicsSpendingPHP; }
 }

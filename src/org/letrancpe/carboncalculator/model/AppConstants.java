@@ -2,9 +2,7 @@
 package org.letrancpe.carboncalculator.model;
 
 /**
- * AppConstants (Model) stores constants used throughout the application,
- * particularly emission factors. These are based on data from the 
- * "Emission Factors Research and Analysis_.pdf" document.
+ * AppConstants (Model) stores constants used throughout the application.
  */
 public class AppConstants {
 
@@ -52,11 +50,15 @@ public class AppConstants {
     public static final double FLIGHT_BUSINESS_CLASS_MULTIPLIER = 1.5;
 
     // === V. WASTE MANAGEMENT ===
-    /** Emission factor for mixed municipal solid waste (MSW) disposed of in landfills. Unit: kgCO2e/kg of waste */
     public static final double EF_WASTE_MSW_LANDFILL_METRO_MANILA_KGCO2E_PER_KG = 4.05; // Oida et al. 2019 (likely AR4 GWP)
 
     // === VI. GOODS CONSUMPTION ===
-    // (To be populated)
+    // Note: Spend-based factors are highly complex and region-specific. These are placeholders.
+    // Further research into Philippine-specific EEIO models is needed for accuracy.
+    /** Placeholder emission factor for clothing. Unit: kg CO2e/PHP */
+    public static final double EF_GOODS_CLOTHING_KGCO2E_PER_PHP_PLACEHOLDER = 0.006; // Example proxy value
+    /** Placeholder emission factor for electronics. Unit: kg CO2e/PHP */
+    public static final double EF_GOODS_ELECTRONICS_KGCO2E_PER_PHP_PLACEHOLDER = 0.008; // Example proxy value
 
     public static final String APP_TITLE = "Carbon Footprint Calculator PH";
 

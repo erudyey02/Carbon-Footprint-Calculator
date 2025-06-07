@@ -6,7 +6,7 @@ import org.letrancpe.carboncalculator.service.CalculationService;
 import org.letrancpe.carboncalculator.service.ReductionPlannerService;
 import org.letrancpe.carboncalculator.service.impl.CalculationServiceImpl;
 import org.letrancpe.carboncalculator.service.impl.ReductionPlannerServiceImpl;
-import org.letrancpe.carboncalculator.view.*; // Import all views
+import org.letrancpe.carboncalculator.view.*;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -22,9 +22,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 /**
- * MainController directs the overall application flow,
- * handles navigation between different views (pages), and mediates interaction
- * between the model and the views. It is a central component of the MVC architecture.
+ * MainController directs the overall application flow.
  */
 public class MainController {
 
@@ -40,9 +38,10 @@ public class MainController {
     private Node housingPageNode;
     private Node dietPageNode;
     private Node transportPageNode;
-    private Node wastePageNode; // Added WastePage node
+    private Node wastePageNode;
+    private Node goodsPageNode; // Added GoodsPage node
     private Node helpPageNode;
-    // TODO: Add nodes for Goods, Results pages.
+    // TODO: Add node for Results page.
 
     public MainController(Stage primaryStage, BorderPane rootLayout) {
         this.primaryStage = primaryStage;
@@ -65,7 +64,8 @@ public class MainController {
         this.housingPageNode = new HousingPage(this, userData).getView();
         this.dietPageNode = new DietPage(this, userData).getView();
         this.transportPageNode = new TransportPage(this, userData).getView();
-        this.wastePageNode = new WastePage(this, userData).getView(); // Initialize WastePage
+        this.wastePageNode = new WastePage(this, userData).getView();
+        this.goodsPageNode = new GoodsPage(this, userData).getView(); // Initialize GoodsPage
         this.helpPageNode = new HelpPage(this).getView();
     }
 
@@ -79,26 +79,23 @@ public class MainController {
 
         Button introButton = createNavButton("Introduction");
         introButton.setOnAction(_ -> showPage(introPageNode));
-
         Button housingButton = createNavButton("Housing & Energy");
         housingButton.setOnAction(_ -> showPage(housingPageNode));
-
         Button dietButton = createNavButton("Diet");
         dietButton.setOnAction(_ -> showPage(dietPageNode));
-
         Button transportButton = createNavButton("Transport");
         transportButton.setOnAction(_ -> showPage(transportPageNode));
-
-        Button wasteButton = createNavButton("Waste"); // Added Waste button
+        Button wasteButton = createNavButton("Waste");
         wasteButton.setOnAction(_ -> showPage(wastePageNode));
-
+        Button goodsButton = createNavButton("Goods"); // Added Goods button
+        goodsButton.setOnAction(_ -> showPage(goodsPageNode));
         Button helpButton = createNavButton("Help / Sources");
         helpButton.setOnAction(_ -> showPage(helpPageNode));
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        navigationBar.getChildren().addAll(titleLabel, spacer, introButton, housingButton, dietButton, transportButton, wasteButton, helpButton); // Added wasteButton
+        navigationBar.getChildren().addAll(titleLabel, spacer, introButton, housingButton, dietButton, transportButton, wasteButton, goodsButton, helpButton); // Added goodsButton
         rootLayout.setTop(navigationBar);
         rootLayout.setCenter(pageContainer);
         showPage(introPageNode);
@@ -125,10 +122,11 @@ public class MainController {
     public void processHousingData() { showPage(dietPageNode); }
     public void processDietData() { showPage(transportPageNode); }
     public void processTransportData() { showPage(wastePageNode); }
-    public void processWasteData() {
-        System.out.println("Processing waste data (placeholder)...");
-        // TODO: Navigate to the next page (e.g., Goods Consumption)
-        // showPage(goodsPageNode);
+    public void processWasteData() { showPage(goodsPageNode); }
+    public void processGoodsData() {
+        System.out.println("Processing goods data (placeholder)...");
+        // TODO: Navigate to the final Results page
+        // showPage(resultsPageNode);
     }
 
     public UserData getUserData() {

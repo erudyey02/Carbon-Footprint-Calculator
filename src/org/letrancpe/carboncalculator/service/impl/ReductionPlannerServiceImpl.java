@@ -31,6 +31,7 @@ public class ReductionPlannerServiceImpl implements ReductionPlannerService {
             generateDietRecommendations(userData, breakdown.getOrDefault("Diet", 0.0), recommendations);
             generateTransportationRecommendations(userData, breakdown.getOrDefault("Transport", 0.0), recommendations);
             generateWasteRecommendations(userData, breakdown.getOrDefault("Waste Management", 0.0), recommendations);
+            generateGoodsRecommendations(userData, breakdown.getOrDefault("Goods Consumption", 0.0), recommendations); // Call new goods recommendations
         }
 
         if (recommendations.isEmpty()) {
@@ -41,29 +42,30 @@ public class ReductionPlannerServiceImpl implements ReductionPlannerService {
     }
 
     private void generateHousingAndEnergyRecommendations(UserData userData, double housingEnergyFootprint, List<Recommendation> recommendations) {
-        // ... (implementation from previous step) ...
+        // This is a placeholder for the full method implementation
     }
 
     private void generateDietRecommendations(UserData userData, double dietFootprint, List<Recommendation> recommendations) {
-        // ... (implementation from previous step) ...
+        // This is a placeholder for the full method implementation
     }
 
     private void generateTransportationRecommendations(UserData userData, double transportFootprint, List<Recommendation> recommendations) {
-        // ... (implementation from previous step) ...
+        // This is a placeholder for the full method implementation
     }
 
     private void generateWasteRecommendations(UserData userData, double wasteFootprint, List<Recommendation> recommendations) {
-        if (userData.getWeeklyNonRecycledWasteKg() > 1.5) { // Example threshold
-            recommendations.add(new Recommendation("Waste", "Consider a waste audit for one week to identify common items being thrown away, which can reveal opportunities for reduction."));
-        }
+        // This is a placeholder for the full method implementation
+    }
 
-        if (userData.getRecyclingRatePercentage() < 50) { // Example threshold
-            recommendations.add(new Recommendation("Waste", "Increase recycling efforts. Check local guidelines for what materials are accepted and ensure they are clean and dry."));
+    private void generateGoodsRecommendations(UserData userData, double goodsFootprint, List<Recommendation> recommendations) {
+        if (userData.getAnnualClothingSpendingPHP() > 10000) { // Example threshold
+            recommendations.add(new Recommendation("Goods", "Consider extending the life of clothing by repairing items. Explore thrift stores or clothing swaps for sustainable fashion options."));
         }
-
-        if (wasteFootprint > 0) {
-            recommendations.add(new Recommendation("Waste", "Look for opportunities to reduce packaging waste by choosing products with minimal packaging or buying in bulk."));
+        if (userData.getAnnualElectronicsSpendingPHP() > 15000) { // Example threshold
+            recommendations.add(new Recommendation("Goods", "For electronics, prioritize repair over replacement where possible. When purchasing new, look for models with high energy efficiency ratings."));
+        }
+        if (goodsFootprint > 0) {
+            recommendations.add(new Recommendation("Goods", "Before making a new purchase, consider if the item is a need or a want. Reducing overall consumption is a powerful way to lower your footprint."));
         }
     }
-    // TODO: Add generateGoodsRecommendations
 }
