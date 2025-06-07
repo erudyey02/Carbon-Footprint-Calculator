@@ -33,7 +33,7 @@ public class CarbonFootprintAppMain extends Application {
         MainController mainController = new MainController(primaryStage, rootLayout);
         mainController.initLayout(); // Initializes navigation and the first page.
 
-        Scene scene = new Scene(rootLayout, 800, 600);
+        Scene scene = new Scene(rootLayout, 1080, 720);
 
         // Basic styling to suggest the monochrome green theme.
         // This can be developed into a dedicated CSS file later.
