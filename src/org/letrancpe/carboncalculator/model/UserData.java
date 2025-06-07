@@ -1,9 +1,13 @@
 // File: org/letrancpe/carboncalculator/model/UserData.java
 package org.letrancpe.carboncalculator.model;
 
+import org.letrancpe.carboncalculator.model.dto.FlightEntry;
+import org.letrancpe.carboncalculator.model.dto.TransportEntry;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * UserData (Model) encapsulates all data input by the user.
- * This class will expand as more input fields are defined for different calculation categories.
  */
 public class UserData {
     // === I. HOUSING ===
@@ -14,35 +18,41 @@ public class UserData {
     // === II. ENERGY CONSUMPTION ===
     private String electricityGridRegion;
     private double monthlyElectricityKWh;
-
     private String primaryCookingFuelType;
     private double cookingFuelMonthlyUsage;
     private boolean isWoodSustainablySourced;
-
     private double dailyHouseholdWaterUsageLiters;
 
     // === III. DIET ===
-    private String redMeatFrequency; // E.g., "Daily", "3-5 times/week", "1-2 times/week", "Rarely/Never"
-    private String poultryFrequency; // Same options as redMeatFrequency
-    private String fishSeafoodFrequency; // Same options as redMeatFrequency
-    private double dailyRiceServings; // Number of servings per day
-    private String riceType; // E.g., "Irrigated", "Rainfed", "Unknown/Average"
-    private String dietaryPattern; // E.g., "Meat-eater (Typical)", "Reduced Meat / Flexitarian", "Vegetarian", "Vegan"
-    private double weeklyFoodWasteKg; // Kilograms of food waste per week
-    private String localFoodSourcingFrequency; // Optional: "Often", "Sometimes", "Rarely" - for recommendations
+    private String redMeatFrequency;
+    private String poultryFrequency;
+    private String fishSeafoodFrequency;
+    private double dailyRiceServings;
+    private String riceType;
+    private String dietaryPattern;
+    private double weeklyFoodWasteKg;
+    private String localFoodSourcingFrequency;
 
     // === IV. TRANSPORTATION ===
-    // (Fields to be added)
+    private List<TransportEntry> regularTransportEntries;
+    private List<FlightEntry> flightEntries;
+    private double annualNonCommuteCarKm;
+    private String annualNonCommuteCarFuelType;
+    private double annualNonCommuteCarFuelEfficiencyKmL;
 
     // === V. WASTE MANAGEMENT ===
-    // (Fields to be added)
+    private double weeklyNonRecycledWasteKg; // Estimated amount per week
+    private double recyclingRatePercentage; // Approximate percentage of recyclable waste that is actually recycled
 
     // === VI. GOODS CONSUMPTION ===
     // (Fields to be added)
 
+    public UserData() {
+        this.regularTransportEntries = new ArrayList<>();
+        this.flightEntries = new ArrayList<>();
+    }
 
     // --- Getters and Setters ---
-
     // Housing
     public String getDwellingType() { return dwellingType; }
     public void setDwellingType(String dwellingType) { this.dwellingType = dwellingType; }
@@ -83,5 +93,23 @@ public class UserData {
     public String getLocalFoodSourcingFrequency() { return localFoodSourcingFrequency; }
     public void setLocalFoodSourcingFrequency(String localFoodSourcingFrequency) { this.localFoodSourcingFrequency = localFoodSourcingFrequency; }
 
-    // TODO: Add getters and setters for Transportation, Waste, and Goods fields.
+    // Transportation
+    public List<TransportEntry> getRegularTransportEntries() { return regularTransportEntries; }
+    public void setRegularTransportEntries(List<TransportEntry> regularTransportEntries) { this.regularTransportEntries = regularTransportEntries; }
+    public List<FlightEntry> getFlightEntries() { return flightEntries; }
+    public void setFlightEntries(List<FlightEntry> flightEntries) { this.flightEntries = flightEntries; }
+    public double getAnnualNonCommuteCarKm() { return annualNonCommuteCarKm; }
+    public void setAnnualNonCommuteCarKm(double annualNonCommuteCarKm) { this.annualNonCommuteCarKm = annualNonCommuteCarKm; }
+    public String getAnnualNonCommuteCarFuelType() { return annualNonCommuteCarFuelType; }
+    public void setAnnualNonCommuteCarFuelType(String annualNonCommuteCarFuelType) { this.annualNonCommuteCarFuelType = annualNonCommuteCarFuelType; }
+    public double getAnnualNonCommuteCarFuelEfficiencyKmL() { return annualNonCommuteCarFuelEfficiencyKmL; }
+    public void setAnnualNonCommuteCarFuelEfficiencyKmL(double annualNonCommuteCarFuelEfficiencyKmL) { this.annualNonCommuteCarFuelEfficiencyKmL = annualNonCommuteCarFuelEfficiencyKmL; }
+
+    // Waste Management
+    public double getWeeklyNonRecycledWasteKg() { return weeklyNonRecycledWasteKg; }
+    public void setWeeklyNonRecycledWasteKg(double weeklyNonRecycledWasteKg) { this.weeklyNonRecycledWasteKg = weeklyNonRecycledWasteKg; }
+    public double getRecyclingRatePercentage() { return recyclingRatePercentage; }
+    public void setRecyclingRatePercentage(double recyclingRatePercentage) { this.recyclingRatePercentage = recyclingRatePercentage; }
+
+    // TODO: Add getters and setters for Goods fields.
 }

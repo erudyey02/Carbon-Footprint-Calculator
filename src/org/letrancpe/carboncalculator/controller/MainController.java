@@ -6,11 +6,7 @@ import org.letrancpe.carboncalculator.service.CalculationService;
 import org.letrancpe.carboncalculator.service.ReductionPlannerService;
 import org.letrancpe.carboncalculator.service.impl.CalculationServiceImpl;
 import org.letrancpe.carboncalculator.service.impl.ReductionPlannerServiceImpl;
-import org.letrancpe.carboncalculator.view.DietPage; // Added DietPage import
-import org.letrancpe.carboncalculator.view.HelpPage;
-import org.letrancpe.carboncalculator.view.HousingPage;
-import org.letrancpe.carboncalculator.view.IntroPage;
-
+import org.letrancpe.carboncalculator.view.*; // Import all views
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -36,19 +32,17 @@ public class MainController {
     private final BorderPane rootLayout;
     private final StackPane pageContainer;
 
-    // Model components
     private UserData userData;
-
-    // Service components
     private CalculationService calculationService;
     private ReductionPlannerService reductionPlannerService;
 
-    // View components (instances of page UI nodes)
     private Node introPageNode;
     private Node housingPageNode;
-    private Node dietPageNode; // Added DietPage node
+    private Node dietPageNode;
+    private Node transportPageNode;
+    private Node wastePageNode; // Added WastePage node
     private Node helpPageNode;
-    // TODO: Add nodes for other pages (Transport, Waste, Goods, Results) as they are developed.
+    // TODO: Add nodes for Goods, Results pages.
 
     public MainController(Stage primaryStage, BorderPane rootLayout) {
         this.primaryStage = primaryStage;
@@ -67,25 +61,14 @@ public class MainController {
     }
 
     private void initializeViews() {
-        IntroPage introPage = new IntroPage(this);
-        this.introPageNode = introPage.getView();
-
-        HousingPage housingPage = new HousingPage(this, userData);
-        this.housingPageNode = housingPage.getView();
-
-        DietPage dietPage = new DietPage(this, userData); // Initialize DietPage
-        this.dietPageNode = dietPage.getView();
-
-        HelpPage helpPage = new HelpPage(this);
-        this.helpPageNode = helpPage.getView();
-
-        // TODO: Initialize other view pages as they are created.
+        this.introPageNode = new IntroPage(this).getView();
+        this.housingPageNode = new HousingPage(this, userData).getView();
+        this.dietPageNode = new DietPage(this, userData).getView();
+        this.transportPageNode = new TransportPage(this, userData).getView();
+        this.wastePageNode = new WastePage(this, userData).getView(); // Initialize WastePage
+        this.helpPageNode = new HelpPage(this).getView();
     }
 
-    /**
-     * Configures the initial layout of the application,
-     * including the navigation bar and the first page to be displayed.
-     */
     public void initLayout() {
         HBox navigationBar = new HBox(10);
         navigationBar.setStyle("-fx-background-color: #A5D6A7; -fx-padding: 10px; -fx-alignment: CENTER_LEFT;");
@@ -95,23 +78,27 @@ public class MainController {
         titleLabel.setTextFill(Color.DARKSLATEGRAY);
 
         Button introButton = createNavButton("Introduction");
-        introButton.setOnAction(e -> showPage(introPageNode));
+        introButton.setOnAction(_ -> showPage(introPageNode));
 
         Button housingButton = createNavButton("Housing & Energy");
-        housingButton.setOnAction(e -> showPage(housingPageNode));
+        housingButton.setOnAction(_ -> showPage(housingPageNode));
 
-        Button dietButton = createNavButton("Diet"); // Added Diet button
-        dietButton.setOnAction(e -> showPage(dietPageNode));
+        Button dietButton = createNavButton("Diet");
+        dietButton.setOnAction(_ -> showPage(dietPageNode));
 
-        // TODO: Add navigation buttons for Transport, Waste, Goods, and Results pages.
+        Button transportButton = createNavButton("Transport");
+        transportButton.setOnAction(_ -> showPage(transportPageNode));
+
+        Button wasteButton = createNavButton("Waste"); // Added Waste button
+        wasteButton.setOnAction(_ -> showPage(wastePageNode));
 
         Button helpButton = createNavButton("Help / Sources");
-        helpButton.setOnAction(e -> showPage(helpPageNode));
+        helpButton.setOnAction(_ -> showPage(helpPageNode));
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        navigationBar.getChildren().addAll(titleLabel, spacer, introButton, housingButton, dietButton, helpButton); // Added dietButton
+        navigationBar.getChildren().addAll(titleLabel, spacer, introButton, housingButton, dietButton, transportButton, wasteButton, helpButton); // Added wasteButton
         rootLayout.setTop(navigationBar);
         rootLayout.setCenter(pageContainer);
         showPage(introPageNode);
@@ -120,8 +107,8 @@ public class MainController {
     private Button createNavButton(String text) {
         Button button = new Button(text);
         button.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;");
-        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"));
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"));
+        button.setOnMouseEntered(_ -> button.setStyle("-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"));
+        button.setOnMouseExited(_ -> button.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"));
         return button;
     }
 
@@ -135,16 +122,13 @@ public class MainController {
         }
     }
 
-    public void processHousingData() {
-        System.out.println("Processing housing data (placeholder)...");
-        // Example: After processing housing, navigate to the Diet page
-        showPage(dietPageNode);
-    }
-
-    public void processDietData() {
-        System.out.println("Processing diet data (placeholder)...");
-        // Example: After processing diet, navigate to the next logical page (e.g., Transport)
-        // showPage(transportPageNode); // Hypothetical next page
+    public void processHousingData() { showPage(dietPageNode); }
+    public void processDietData() { showPage(transportPageNode); }
+    public void processTransportData() { showPage(wastePageNode); }
+    public void processWasteData() {
+        System.out.println("Processing waste data (placeholder)...");
+        // TODO: Navigate to the next page (e.g., Goods Consumption)
+        // showPage(goodsPageNode);
     }
 
     public UserData getUserData() {

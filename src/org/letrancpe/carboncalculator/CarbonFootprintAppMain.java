@@ -22,7 +22,7 @@ public class CarbonFootprintAppMain extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Carbon Footprint Calculator - Philippines");
+        primaryStage.setTitle("Carbon Footprint Calculator");
 
         // The root layout for the main application window.
         // This layout will be populated by the MainController.
