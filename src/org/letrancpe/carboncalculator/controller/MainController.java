@@ -121,6 +121,13 @@ public class MainController {
         }
     }
 
+    /**
+     *  Public method to allow IntroPage to trigger navigation.
+     */
+    public void navigateToHousingPage() {
+        showPage(housingPageNode);
+    }
+
     public void processHousingData() { showPage(dietPageNode); }
     public void processDietData() { showPage(transportPageNode); }
     public void processTransportData() { showPage(wastePageNode); }
@@ -129,16 +136,9 @@ public class MainController {
     public void processGoodsDataAndCalculate() {
         System.out.println("Final data saved. Calculating results...");
 
-        // 1. Perform the final calculation
         CalculatedFootprintData footprintData = calculationService.calculateFootprint(userData);
-
-        // 2. Generate personalized recommendations
         List<Recommendation> recommendations = reductionPlannerService.generateRecommendations(userData, footprintData);
-
-        // 3. Update the ResultsPage with the new data
         resultsPage.updateResults(footprintData, recommendations);
-
-        // 4. Navigate to the ResultsPage
         showPage(resultsPage.getView());
     }
 

@@ -35,7 +35,10 @@ public class IntroPage {
         Button startButton = new Button("Begin Calculation");
         startButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         startButton.setStyle("-fx-background-color: #66BB6A; -fx-text-fill: white; -fx-padding: 10 20; -fx-background-radius: 5;");
-        startButton.setOnAction(_ -> System.out.println("Intro Page: 'Begin Calculation' clicked. Use the top navigation bar to proceed to 'Housing & Energy'."));
+
+        // Calls the navigation method on the controller.
+        startButton.setOnAction(_ -> controller.navigateToHousingPage());
+
         layout.getChildren().addAll(title, description, startButton);
         return layout;
     }
